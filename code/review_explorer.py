@@ -17,20 +17,6 @@ Run it:  Run and Debug -> "Streamlit Run: Current File"
 Test it: pytest tests/test_pipeline.py -k app
 """
 
-import os
-
-import streamlit as st
-
-from reviews import (
-    REVIEWS_FILE,
-    analyze_reviews,
-    answer_question,
-    ask_llm,
-    build_messages,
-    describe_scope,
-    load_aliases,
-    summarize_items,
-)
 
 # --- The page: the algorithm, step by step ------------------------------------------
 #

@@ -22,13 +22,8 @@ from Assignment 05, now coming out of JSON instead of a CSV.
 Less scaffolding here: the steps are described, the code is yours.
 """
 
-import json
-import os
 
 import pandas as pd
-
-from .apicalls import classify_mentions, get_entities, get_sentiment
-from .settings import MENTION_CATEGORIES
 
 
 def sentiment_step(reviews: pd.DataFrame, cache_file: str) -> list:

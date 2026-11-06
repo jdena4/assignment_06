@@ -20,21 +20,11 @@ how it is checked.
 import pandas as pd
 
 from .apicalls import get_entities
-from .pipeline import (
-    entities_step,
-    entities_table,
-    opinions_table,
-    sentences_table,
-    sentiment_step,
-    subjects_step,
-)
 from .settings import (
     ALIASES_FILE,
     LOCATION_WORDS,
     MENTION_CATEGORIES,
     SUBJECT_WORDS,
-    SYSTEM_PROMPT,
-    cache_path,
 )
 
 MENTION_COLUMNS = ["review_id", "sentence_id", "mention", "mention_sentiment",
