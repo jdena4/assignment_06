@@ -1,7 +1,1 @@
-Write your reflection here.
-
-See reflection.md for what makes a good reflection — be specific, use the
-terminology from this assignment (REST API, endpoint, HTTP status code,
-raise_for_status, API key, form data vs. JSON body, rate limit, caching,
-json_normalize, record_path, meta, grain, opinion mining, named-entity
-recognition, prompt, system prompt, reasoning model), and make it actionable.
+The JSON part of this assignment confused me the most, but working through it gave me a much better understanding. I learned that pd.json_normalize with record_path and meta changes the grain of the data, from one row per review to one row per sentence, while keeping the review_id on every row. opinions_table was harder because each target points to its assessments with a ref, so I had to use nested loops instead. I also learned that Azure endpoints take form data (data=) while the AI endpoints take a JSON body (json=), and that caching API responses keeps me under the rate limit. I struggled with debugging the ruff errors, like tabs mixed with spaces, lines that were too long, and ruff check --fix deleting imports I still needed, which caused NameErrors I had to track down. Next, I will practice reading nested JSON by rewriting opinions_table on my own, and I will run plain ruff check after each function instead of using --fix.
