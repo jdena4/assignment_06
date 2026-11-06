@@ -29,6 +29,7 @@ import os
 from .apicalls import get_entities, get_sentiment, classify_mentions
 from .settings import MENTION_CATEGORIES
 
+
 def sentiment_step(reviews: pd.DataFrame, cache_file: str) -> list:
     """Sentiment for every review, from the cache if it exists, else from the API.
 
@@ -95,13 +96,12 @@ def sentences_table(documents: list) -> pd.DataFrame:
     and `.cumcount()`. Keep only the six columns above. Strip the trailing space
     Azure leaves on `sentence_text` with `.str.strip()`.
     """
-    df =pd.json_normalize(documents, record_path="sentences",
+    df = pd.json_normalize(documents, record_path="sentences",
                           meta=["review_id"], record_prefix="sentence_")
     df["sentence_id"] = df.groupby("review_id").cumcount()
     df["sentence_text"] = df["sentence_text"].str.strip()
     return df[["review_id", "sentence_id", "sentence_text",
                "sentence_sentiment", "sentence_offset", "sentence_length"]]
-
 
 
 def opinions_table(documents: list) -> pd.DataFrame:
@@ -198,7 +198,8 @@ def subjects_step(reviews: pd.DataFrame, mentions: pd.DataFrame,
     rows = []
     for review in reviews.to_dict("records"):
         review_mentions = mentions[mentions["review_id"] == review["review_id"]]
-        unique_mentions = review_mentions.sort_values("mention_offset").drop_duplicates("mention")
+        unique_mentions = (review_mentions.sort_values("mention_offset")
+                           .drop_duplicates("mention"))
         mention_list = unique_mentions["mention"].tolist()
         response = classify_mentions(review["text"], mention_list)
         for mention in mention_list:
@@ -208,6 +209,7 @@ def subjects_step(reviews: pd.DataFrame, mentions: pd.DataFrame,
                 "subject": response["answers"][mention]["choice"],
                 "subject_confidence": response["answers"][mention]["confidence"]
             })
-        result = pd.DataFrame(rows, columns=["review_id", "mention", "subject", "subject_confidence"])
+        result = pd.DataFrame(rows, columns=["review_id", "mention", "subject",
+                                             "subject_confidence"])
     result.to_csv(cache_file, index=False)
     return result
