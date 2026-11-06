@@ -26,8 +26,7 @@ Less scaffolding here: the steps are described, the code is yours.
 import pandas as pd
 import json
 import os
-from .apicalls import classify_mentions, get_entities, get_sentiment
-from .settings import MENTION_CATEGORIES
+from .apicalls import get_entities, get_sentiment
 
 
 def sentiment_step(reviews: pd.DataFrame, cache_file: str) -> list:
