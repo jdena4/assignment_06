@@ -24,6 +24,10 @@ Less scaffolding here: the steps are described, the code is yours.
 
 
 import pandas as pd
+import json
+import os
+from .apicalls import classify_mentions, get_entities, get_sentiment
+from .settings import MENTION_CATEGORIES
 
 
 def sentiment_step(reviews: pd.DataFrame, cache_file: str) -> list:
@@ -44,8 +48,18 @@ def sentiment_step(reviews: pd.DataFrame, cache_file: str) -> list:
     re-run on the same reviews is free either way — but your cache also works
     offline, and it is what makes the transform steps below fast to debug.
     """
-    # TODO: your code here
-    pass
+    if os.path.exists(cache_file):
+        with open(cache_file) as fh:
+            return json.load(fh)
+    documents = []
+    for review in reviews.to_dict("records"):
+        response = get_sentiment(review["text"])
+        document = response["results"]["documents"][0]
+        document["review_id"] = review["review_id"]
+        documents.append(document)
+    with open(cache_file, "w") as fh:
+        json.dump(documents, fh)
+    return documents
 
 
 def entities_step(reviews: pd.DataFrame, cache_file: str) -> list:
@@ -54,8 +68,18 @@ def entities_step(reviews: pd.DataFrame, cache_file: str) -> list:
     One dict per review: the Azure entity-recognition document with `review_id`
     added. Same cache rule, same loop, `get_entities` instead of `get_sentiment`.
     """
-    # TODO: your code here
-    pass
+    if os.path.exists(cache_file):
+            with open(cache_file) as fh:
+                return json.load(fh)
+    documents = []
+    for review in reviews.to_dict("records"):
+        response = get_entities(review["text"])
+        document = response["results"]["documents"][0]
+        document["review_id"] = review["review_id"]
+        documents.append(document)
+    with open(cache_file, "w") as fh:
+        json.dump(documents, fh)
+    return documents
 
 
 def sentences_table(documents: list) -> pd.DataFrame:

@@ -93,8 +93,8 @@ def item_name(mention: str, aliases: dict) -> str:
         item_name("Parking downtown", aliases)  ->  "parking"
         item_name("Mocha Latte", aliases)        ->  "mocha latte"   # not an alias
     """
-    # TODO: your code here
-    pass
+    key = mention.strip().lower()
+    return aliases.get(key, key)
 
 
 def build_mentions(reviews: pd.DataFrame, sentences: pd.DataFrame,
